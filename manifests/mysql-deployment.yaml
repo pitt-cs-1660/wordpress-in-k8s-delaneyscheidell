@@ -38,8 +38,10 @@ metadata:
 spec:
   ##
   # create deployment selector here
-  app: wordpress
-  tier: mysql
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: mysql
   template:
     ##
     # create pod metadata labels here (match the selectorLabels)
@@ -87,14 +89,13 @@ spec:
           ports:
             - containerPort: 3306
               name: mysql
-          volumeMounts:
-            - name: mysql-storage
-              mountPath: /var/lib/mysql
           ##
           # add volumeMounts inside the container spec above
           # mount path: /var/lib/mysql
           ##
-
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
       ##
       # add volumes at the pod spec level (same indentation as containers)
       # reference the PVC: mysql-pv-claim
@@ -112,7 +113,7 @@ spec:
 ##
 
 apiVersion: v1
-kind: persistentVolumeClaim
+kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
 spec:
